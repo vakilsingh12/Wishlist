@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+   <link rel="stylesheet" href="/style.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+  <%- include('partials/nav'); %>
+  <h1>This is Home Page</h1>
+  <form id="myForm">
+  <input type="text" name="item">
+  <button type="submit">Add To Wishlist</button>
+  </form>
+  <!-- <h1><%= data.name %>
+  <%= data.status %></h1> -->
+  <ul>
+    <% data.forEach(item=>{ %>
+     <li onclick="deleteme(this)"><%= item.wish %></li> 
+   <% }) %>
+  </ul>
+  <h2>Hello I am Vakil singh karodiwal Bhagsar and i am doing btech from lovely professional university jalandhar(punjab-144411)</h2>
+  <script>
+ document.getElementById('myForm').onsubmit=(e)=>{
+   e.preventDefault();
+   const url="http://localhost:5000/sent";
+   var data=new URLSearchParams();
+   for(const pair of new FormData(e.target)){
+     data.append(pair[0],pair[1])
+   }
+   fetch(url,{
+     method:"post",
+     body:data
+   }).then(res=>res.json())
+   .then(res2=>{
+     console.log(res2)
+     location.reload()
+   })
+ }
+  function deleteme(item)
+  {
+     fetch("http://localhost:5000/remove/"+item.innerText,{
+      method:"delete"
+     }).then(res=>res.json())
+     .then(res2=>{
+       console.log(res2)
+       location.reload()
+     });
+     
+  }
+  </script>
+</body>
+</html>
